@@ -15,7 +15,7 @@ import Validation from "../script/validation.js";
 
 
 const token = '84c86aad-d0d1-4ec9-91d9-06e6853e2cef';
-const userId = 'ea1bff16927c3a7237205010';
+//const userId = 'ea1bff16927c3a7237205010';
 
 
 const initialCards = [
@@ -174,7 +174,7 @@ cardList.container.addEventListener('click', function(event) {
   let clickedCard = cardList.findCard(event.target.closest('.place-card'));
   
   if (event.target.classList.contains('place-card__like-icon')) {
-    api.likeCard(clickedCard.json._id, clickedCard.isLiked(userId))
+    api.likeCard(clickedCard.json._id, clickedCard.isLiked('84c86aad-d0d1-4ec9-91d9-06e6853e2cef'))
        .then(card => {
          clickedCard.render(card);
        })

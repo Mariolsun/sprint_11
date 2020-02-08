@@ -1,3 +1,4 @@
+
 export default class Api {
   constructor(options) {
     this.options = {
@@ -9,11 +10,14 @@ export default class Api {
     this.editProfile = this.editProfile.bind(this);
 
   }
-
+    
   getInitialCards() {
     return fetch(`${this.baseUrl}/cards`, this.options)
       .then(res => {
-        if(res.ok) {return res.json()}
+        console.log('initial cards fetching');
+        if(res.ok) {
+          console.log('all ok');
+          return res.json()}
         return Promise.reject(`Error: ${res}`)
       });
   }
