@@ -2,7 +2,10 @@ import "./style.css";
 import Card from "../script/Card.js";
 import Api from "../script/Api.js";
 import CardList from "../script/CardList.js";
-import {PopupCard, PopupEdit, PopupImage, PopupAvatar} from "../script/PopupV2.js";
+import PopupCard from "../script/PopupCard.js";
+import PopupEdit from "../script/PopupEdit.js";
+import PopupImage from "../script/PopupImage.js";
+import PopupAvatar from "../script/PopupAvatar.js";
 import Validation from "../script/validation.js";
 
 
