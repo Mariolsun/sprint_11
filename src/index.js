@@ -1,3 +1,20 @@
+import "./style.css";
+import Card from "../script/Card.js";
+import Api from "../script/Api.js";
+import CardList from "../script/CardList.js";
+import {PopupCard, PopupEdit, PopupImage, PopupAvatar} from "../script/PopupV2.js";
+import Validation from "../script/validation.js";
+
+
+
+
+
+
+
+const token = '84c86aad-d0d1-4ec9-91d9-06e6853e2cef';
+const userId = 'ea1bff16927c3a7237205010';
+
+
 const initialCards = [
   {
     name: 'Архыз',
@@ -188,37 +205,4 @@ popupAvatar.block.addEventListener('submit', function(event) {
 })
 
 
-/*
-  Хорошая работа:
-  - класс Api только обменивается с сервером и
-  сам не изменяет страницу возвращая из своих методов промисы
-  - помимо обязательных запросов сделаны также запросы из дополнительной части задания
-  - адрес сервера передается в конструктор класса Api
 
-  Но есть и некоторые замечания:
-  
-  Надо исправить:
-  - при запросах likeCard и deleteCard проблемы с обработкой ошибок - блок catch должен
-  располагаться в конце цепочки ***сделано***
-
-  Можно лучше:
-  - проверку ответа сервера и преобразование из json можно вынести отдельным методом чтобы не дублировать ***сделано***
-
-*/
-
-/*
-  Замечания исправлены
-
-  Можно лучше: т.к. метод getResponseData не используется вне класса лучше пометить его как приватный добавив 
-  в начале символ подчеркивания _getResponseData 
-
-  Если у Вас будет свободное время попробуйте изучить работу с сервером
-  с использованием async/await для работы с асинхронными запросами.
-  https://medium.com/@stasonmars/%D0%BF%D0%BE%D0%BB%D0%BD%D0%BE%D0%B5-%D0%BF%D0%BE%D0%BD%D0%B8%D0%BC%D0%B0%D0%BD%D0%B8%D0%B5-%D1%81%D0%B8%D0%BD%D1%85%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B8-%D0%B0%D1%81%D0%B8%D0%BD%D1%85%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE-javascript-%D1%81-async-await-ba5f47f4436
-
-  https://learn.javascript.ru/async-await
-  https://habr.com/ru/company/ruvds/blog/414373/
-  Это часто используется в реальной работе
-
-  Успехов в дальнейшем обучении!
-*/

@@ -1,4 +1,4 @@
-class Card {
+export default class Card {
   constructor(template, properties) {
   
     this.elem = document.createElement('div');

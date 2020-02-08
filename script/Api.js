@@ -1,4 +1,4 @@
-class Api {
+export default class Api {
   constructor(options) {
     this.options = {
       headers: options.headers
@@ -21,7 +21,7 @@ class Api {
   getUserProfile() {
 
     return fetch(`${this.baseUrl}/users/me`, this.options)
-      .then(res => this.getResponseData(res));
+      .then(res => this._getResponseData(res));
   }
 
   editProfile(name, about) {
@@ -33,7 +33,7 @@ class Api {
 
     this.options.method = 'PATCH';
     return fetch(`${this.baseUrl}/users/me`, this.options)
-      .then(res => this.getResponseData(res));
+      .then(res => this._getResponseData(res));
   }
 
   addCard(name, link) {
@@ -44,21 +44,21 @@ class Api {
   
     this.options.method = 'POST';
     return fetch(`${this.baseUrl}/cards`, this.options)
-            .then(res => this.getResponseData(res));
+            .then(res => this._getResponseData(res));
   }
 
   deleteCard(id) {
     
     this.options.method = 'DELETE'
     return fetch(`${this.baseUrl}/cards/${id}`, this.options)
-            .then(res => this.getResponseData(res)); 
+            .then(res => this._getResponseData(res)); 
   }
   
   likeCard(id, isLiked) {
     if(isLiked) {this.options.method = 'DELETE'}
     if(!isLiked) {this.options.method = 'PUT'}
     return fetch(`${this.baseUrl}/cards/like/${id}`, this.options)
-        .then(res => this.getResponseData(res));
+        .then(res => this._getResponseData(res));
 
 
   }
@@ -70,12 +70,12 @@ class Api {
     });
 
     return fetch(`${this.baseUrl}/users/me/avatar`, this.options)
-        .then(res => this.getResponseData(res));
+        .then(res => this._getResponseData(res));
   }
 
   /* Можно лучше: т.к. метод getResponseData не используется вне класса лучше пометить его как приватный добавив 
   в начале символ подчеркивания _getResponseData */
-  getResponseData(res) {
+  _getResponseData(res) {
     if (res.ok) {
       return res.json();
     }
