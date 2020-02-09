@@ -108,7 +108,7 @@ openEditFormBtn.addEventListener('click', popupEdit.open);
 userAvatar.addEventListener('click', popupAvatar.open);
 
 const api = new Api({
-  baseUrl: 'https://praktikum.tk/cohort6',
+  baseUrl: NODE_ENV === 'development' ? 'http://praktikum.tk/cohort6' : 'https://praktikum.tk/cohort6',
   headers: {
     authorization: token,
     'Content-Type': 'application/json'
