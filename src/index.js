@@ -108,7 +108,7 @@ openEditFormBtn.addEventListener('click', popupEdit.open);
 userAvatar.addEventListener('click', popupAvatar.open);
 
 const api = new Api({
-  baseUrl: 'http://95.216.175.5/cohort6',
+  baseUrl: 'https://praktikum.tk/cohort6',
   headers: {
     authorization: token,
     'Content-Type': 'application/json'
@@ -168,13 +168,12 @@ popupCard.block.addEventListener('submit', function(event) {
      .finally(()=>popupCard.renderLoading(false));
 });
 
-
 cardList.container.addEventListener('click', function(event) {
   
   let clickedCard = cardList.findCard(event.target.closest('.place-card'));
   
   if (event.target.classList.contains('place-card__like-icon')) {
-    api.likeCard(clickedCard.json._id, clickedCard.isLiked('84c86aad-d0d1-4ec9-91d9-06e6853e2cef'))
+    api.likeCard(clickedCard.json._id, clickedCard.isLiked('ea1bff16927c3a7237205010'))
        .then(card => {
          clickedCard.render(card);
        })

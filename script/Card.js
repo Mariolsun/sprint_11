@@ -53,8 +53,8 @@ export default class Card {
     this.image.style.backgroundImage = `url(${this.json.link})`;
     this.name.textContent = this.json.name;
     this.likesAmount.textContent = json.likes.length;
-    this.renderLike(this.isLiked(userId));
-    this.renderDeleteBtn(this.isMine(userId));
+    this.renderLike(this.isLiked('ea1bff16927c3a7237205010'));
+    this.renderDeleteBtn(this.isMine('ea1bff16927c3a7237205010'));
   }
 
 
