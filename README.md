@@ -10,4 +10,4 @@ v 0.0.1
 6. JS разбит на модули
 
 
-     dir npm install webpack
+     dir /npm install webpack
