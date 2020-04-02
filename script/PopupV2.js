@@ -1,4 +1,4 @@
-class Popup {
+export default class Popup {
   constructor(template, destination) {
   
     this.block = document.createElement('div');
@@ -37,4 +37,3 @@ class Popup {
     } else element.style.visibility = 'hidden';
   }
 }
-
