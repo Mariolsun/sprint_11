@@ -6,67 +6,21 @@ import PopupCard from "../script/PopupCard.js";
 import PopupEdit from "../script/PopupEdit.js";
 import PopupImage from "../script/PopupImage.js";
 import PopupAvatar from "../script/PopupAvatar.js";
+import PopupSignin from "../script/PopupSignin.js";
 import Validation from "../script/validation.js";
 
 
 
 
 
-
-
-const token = '84c86aad-d0d1-4ec9-91d9-06e6853e2cef';
-//const userId = 'ea1bff16927c3a7237205010';
-
-
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  },
-  {
-    name: 'Нургуш',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/khrebet-nurgush.jpg'
-  },
-  {
-    name: 'Тулиновка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/tulinovka.jpg'
-  },
-  {
-    name: 'Остров Желтухина',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/zheltukhin-island.jpg'
-  },
-  {
-    name: 'Владивосток',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/vladivostok.jpg'
-  }
-];
+const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTgzOWQ3ZjY4MTVhOTJlYzQ3NGJlZTIiLCJpYXQiOjE1ODU4MjM1NzgsImV4cCI6MTU4NjQyODM3OH0.DjAEDcMS6HY0zorksE9-QmWSYWsg0R9FgVreIAKzBjg';
 
 const sectionToAppend = document.querySelector('.root');
 const placesBlock = document.querySelector('.places-list');
 
 const openAddFormBtn = document.querySelector('.user-info__button_type_add');
 const openEditFormBtn = document.querySelector('.user-info__button_type_edit');
-
+const openSigninBtn = document.querySelector('.user-info__button_type_signin');
 const userName = document.querySelector('.user-info__name');
 const userInfo = document.querySelector('.user-info__job');
 const userAvatar = document.querySelector('.user-info__photo');
@@ -82,14 +36,14 @@ const addPopupTemplate = document.getElementById('popup_type_add');
 const editPopupTemplate = document.getElementById('popup_type_edit');
 const imagePopupTemplate = document.getElementById('popup_type_image');
 const popupAvatarTemplate = document.getElementById('popup_type_avatar');
-
+const signinTemplate = document.getElementById('popup_type_signin');
 const validationMessages = {
   required: 'Это обязательное поле',
   incorrectLength: 'Должно быть от 2 до 30 символов',
   invalidUrl: 'Здесь должна быть ссылка'
 };
 
-
+console.log(`cookie: ${document.cookie}`);
 
 
 const cardList = new CardList(placesBlock);
@@ -102,15 +56,12 @@ const validation = new Validation(validationMessages);
 const popupEdit = new PopupEdit(editPopupTemplate, sectionToAppend, validation);
 const popupAvatar = new PopupAvatar(popupAvatarTemplate, sectionToAppend, validation);
 const popupImage = new PopupImage(imagePopupTemplate, sectionToAppend);
+const popupSignin = new PopupSignin(signinTemplate, sectionToAppend, validation);
 
-
-openEditFormBtn.addEventListener('click', popupEdit.open);
-userAvatar.addEventListener('click', popupAvatar.open);
 
 const api = new Api({
-  baseUrl: NODE_ENV === 'development' ? 'http://praktikum.tk/cohort6' : 'https://praktikum.tk/cohort6',
+  baseUrl: 'https://api.mesto.website',
   headers: {
-    authorization: token,
     'Content-Type': 'application/json'
   }
 });
@@ -119,20 +70,37 @@ const api = new Api({
 
 const popupCard = new PopupCard(api, addPopupTemplate, sectionToAppend, validation);
 popupCard.addCard = cardList.addCard.bind(cardList);
-openAddFormBtn.addEventListener('click', popupCard.open);
 
-api.getUserProfile()
-   .then(user => {
-     ;
-     popupEdit.renderUser(user);
+
+api.getInitialData()
+   .then(data => {
+     if(data.user) {
+       console.log('rendering authorized user page');
+       openEditFormBtn.addEventListener('click', popupEdit.open);
+       userAvatar.addEventListener('click', popupAvatar.open);
+       openAddFormBtn.addEventListener('click', popupCard.open);
+       popupEdit.renderUser(data.user)
+     } else {
+       console.log('addin eventlistener to signin button');
+       openSigninBtn.addEventListener('click', popupSignin.open);
+     }
+
+     console.log(`index.js recieved initial info: ${typeof data}`);
+     data.cards.forEach(card => {
+      
+      let newCard = new Card(cardTemplate, card);
+      
+      cardList.addCard(newCard);
+    });
    })
    .catch(e => console.log(`Error: ${e}`));
 
 
+/*
 api.getInitialCards()
    .then(cards => {
-     
-     cards.forEach(card => {
+     console.log(`index.js getting initial cards: ${JSON.stringify(cards)}`);
+     cards.data.forEach(card => {
       
        let newCard = new Card(cardTemplate, card);
        
@@ -141,7 +109,7 @@ api.getInitialCards()
     })
    .catch(e => console.log(`Error: ${e}`));
 
-
+*/
 popupEdit.block.addEventListener('submit', function(event) {
   event.preventDefault();
   popupEdit.renderLoading(true);

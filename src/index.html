@@ -12,16 +12,11 @@
 
     <header class="header root__section">
       <img src="<%=require('../images/logo.svg').default%>" alt="mesto logo" class="logo">
+      <a href="mesto.website/" class="header__link"></a>
     </header>
     <div class="profile root__section">
-      <div class="user-info">
-        <div class="user-info__photo"></div>
-        <div class="user-info__data">
-          <h1 class="user-info__name">Sergey Zvorygin</h1>
-          <p class="user-info__job">some guy</p>
-          <button class="button user-info__button_type_edit">Edit</button>
-        </div>
-        <button class="button user-info__button_type_add">+</button>
+      <div class="user-info unauthorized">
+        <button class="button user-info__button_type_signin">Войти</button>
       </div>
     </div>
     <div class="places-list root__section">
@@ -42,7 +37,35 @@
           </form>
         </div>
   </template>  
-  
+
+  <template id='popup_type_signin'>
+    <div class="popup__content">
+      <img src="<%=require('../images/close.svg').default%>" alt="" class="popup__close">
+      <h3 class="popup__title">Введите учетные данные</h3>
+      <form class="popup__form" name="add">
+          <input type="text" name="email" class="popup__input popup__input_type_email" placeholder="Название">
+          <div class="popup__validate-alert popup__validate-alert_type_email">Это обязательное поле</div>
+          <input type="text" name="password" class="popup__input popup__input_type_password" placeholder="Ссылка на картинку">
+          <div class="popup__validate-alert popup__validate-alert_type_password">Это обязательное поле</div>
+          <button type class="button popup__button popup__button_disabled">отправить</button>
+      </form>
+    </div>
+</template> 
+
+<template id='popup_type_signup'>
+  <div class="popup__content">
+    <img src="<%=require('../images/close.svg').default%>" alt="" class="popup__close">
+    <h3 class="popup__title">Регистрация </h3>
+    <form class="popup__form" name="add">
+        <input type="text" name="name" class="popup__input popup__input_type_name" placeholder="Название">
+        <div class="popup__validate-alert popup__validate-alert_type_name">Это обязательное поле</div>
+        <input type="text" name="link" class="popup__input popup__input_type_link-url" placeholder="Ссылка на картинку">
+        <div class="popup__validate-alert popup__validate-alert_type_link-url">Это обязательное поле</div>
+        <button type class="button popup__button popup__button_disabled">+</button>
+    </form>
+  </div>
+</template> 
+
   <template id='popup_type_edit'>
         <div class="popup__content">
           <img src="<%=require('../images/close.svg').default%>" alt="" class="popup__close">
@@ -89,6 +112,20 @@
           <div class="place-card__likes-amount"></div>
         </div>
       </div>
+  </template>
+
+  <template id="user-profile-auth" class="user-info authorized">
+    <div class="user-info__photo"></div>
+    <div class="user-info__data">
+      <h1 class="user-info__name">Stas Basov</h1>
+      <p class="user-info__job">some guy</p>
+      <button class="button user-info__button_type_edit">Edit</button>
+      <button class="button user-info__button_type_add">+</button>
+    </div>
+  </template>
+
+  <template id="user-profile-no-auth" class="user-info unauthorized">
+    <button class="button user-info__button_type_signin">Войти</button>
   </template>
     
   <script src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>

@@ -11,25 +11,28 @@ export default class Api {
 
   }
     
-  getInitialCards() {
-    return fetch(`${this.baseUrl}/cards`, this.options)
+  getInitialData() {
+    this.options.authorization = this._getToken();
+    return fetch(`${this.baseUrl}/pageload`, this.options)
       .then(res => {
-        console.log('initial cards fetching');
+        console.log(`fetching initial data ${res.status}`);
+        console.log(`api.js res.headers: ${JSON.stringify(res.headers)}`);
         if(res.ok) {
-          console.log('all ok');
-          return res.json()}
+          console.log(`all ok: ${res.status}`);
+          return res.json();
+        }
         return Promise.reject(`Error: ${res}`)
       });
   }
 
   getUserProfile() {
-
+    this.options.authorization = this._getToken();
     return fetch(`${this.baseUrl}/users/me`, this.options)
       .then(res => this._getResponseData(res));
   }
 
   editProfile(name, about) {
-
+    this.options.authorization = this._getToken();
     this.options.body = JSON.stringify({
       name: name,
       about: about,
@@ -41,6 +44,7 @@ export default class Api {
   }
 
   addCard(name, link) {
+    this.options.authorization = this._getToken();
     this.options.body = JSON.stringify({
       name: name,
       link: link
@@ -52,13 +56,14 @@ export default class Api {
   }
 
   deleteCard(id) {
-    
+    this.options.authorization = this._getToken();
     this.options.method = 'DELETE'
     return fetch(`${this.baseUrl}/cards/${id}`, this.options)
             .then(res => this._getResponseData(res)); 
   }
   
   likeCard(id, isLiked) {
+    this.options.authorization = this._getToken();
     if(isLiked) {this.options.method = 'DELETE'}
     if(!isLiked) {this.options.method = 'PUT'}
     return fetch(`${this.baseUrl}/cards/like/${id}`, this.options)
@@ -68,6 +73,7 @@ export default class Api {
   }
 
   updateAvatar(link) {
+    this.options.authorization = this._getToken();
     this.options.method = 'PATCH';
     this.options.body = JSON.stringify({
       avatar: link
@@ -77,12 +83,14 @@ export default class Api {
         .then(res => this._getResponseData(res));
   }
 
-  /* Можно лучше: т.к. метод getResponseData не используется вне класса лучше пометить его как приватный добавив 
-  в начале символ подчеркивания _getResponseData */
   _getResponseData(res) {
     if (res.ok) {
       return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`);
+  }
+
+  _getToken() {
+    return localStorage.getItem('token');
   }
 }
